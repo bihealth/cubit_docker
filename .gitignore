@@ -1,0 +1,9 @@
+# Editor cruft
+.*.sw?
+*~
+
+# Hide backup stuff
+old/
+
+# The Cubit checkout
+cubit/
