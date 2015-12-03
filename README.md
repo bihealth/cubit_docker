@@ -34,6 +34,8 @@ The description here is for `centos7` but it should work for `ubuntu14.04` and `
 First, edit `centos7/data/Dockerfile` and `centos7/system/Dockerfile` and replace the UID 5005 and GID 5000 by your local UID and GID.
 Also, update the lines defining `http_proxy` and `https_proxy` to reflect the proxy settings in your organization or remove these lines if you do not need a proxy for HTTP(S).
 
+Adjust `centos7/Makefile` and change `/vol/local/data/cubit.env/cubit` to the path to your cubit checkout.
+
 Then, execute the following:
 
 ```
