@@ -24,14 +24,16 @@ RUN apt-get install -y \
      liblzo2-dev \
      libssl-dev \
      libtinfo-dev \
-     libxml2-dev \
      libx11-dev \
+     libxml2-dev \
+     pkg-config \
      python \
      python2.7 \
-     pkg-config \
+     unzip \
      vim-nox \
      wget \
-     zip unzip
+     xorg-dev \
+     zip
 
 # Update cubit's .bashrc
 RUN echo "typeset -f module > /dev/null" >> /home/cubit/.bashrc && \

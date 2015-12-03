@@ -6,6 +6,8 @@ ENV https_proxy=http://proxy.charite.de:8080
 # Add group and user first so they are assigned consistently
 RUN groupadd cubit -g 5000 \
     && useradd -u 5005 -g cubit cubit
+RUN mkdir /home/cubit \
+        && chown cubit:cubit /home/cubit
 
 # Install required packages
 RUN apt-get update
@@ -22,14 +24,16 @@ RUN apt-get install -y \
       liblzo2-dev \
       libssl-dev \
       libtinfo-dev \
-      libxml2-dev \
       libx11-dev \
+      libxml2-dev \
+      pkg-config \
       python \
       python2.7 \
-      pkg-config \
+      unzip \
       vim-nox \
       wget \
-      zip unzip
+      xorg-dev \
+      zip
 
 # Update cubit's .bashrc
 RUN echo "typeset -f module > /dev/null" >> /home/cubit/.bashrc && \
