@@ -61,3 +61,28 @@ After the updating step (in particular the one involving Git LFS) is complete, y
 # cd /cubit/tools
 # ./buildscript.sh /cubit/tools
 ```
+
+## Reset Data Image
+
+To remove the existing installation of `cubit` and to start with a fresh installation, you can simply remove the docker container:
+
+```
+# docker ps -a
+```
+
+In this list find the container that is named `cubit.<OS>.data:latest`:
+
+```
+CONTAINER ID        IMAGE                           
+7fa46fdb983d        cubit.centos7.data:latest       
+4c0fbc79ff7c        cubit.ubuntu14.04.data:latest   
+22977c1e9df2        cubit.debian8.data:latest       
+```
+
+Then remove the according container, giving the `CONTAINER ID` and build a new one:
+
+```
+# docker rm <CONTAINTER ID>
+# make build_data
+# make run_data
+```
