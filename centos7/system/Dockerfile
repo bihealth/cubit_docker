@@ -38,6 +38,7 @@ RUN yum install -y \
     python-devel \
     sqlite-devel \
     tar \
+    tcsh \
     unzip \
     vim-common \
     wget \

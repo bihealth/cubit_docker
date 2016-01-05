@@ -29,6 +29,7 @@ RUN apt-get install -y \
       pkg-config \
       python \
       python2.7 \
+      tcsh \
       unzip \
       vim-nox \
       wget \
