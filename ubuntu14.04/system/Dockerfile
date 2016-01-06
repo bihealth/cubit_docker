@@ -51,6 +51,3 @@ USER cubit
 
 # Go to /home/cubit after login
 WORKDIR /home/cubit
-
-# Fetch easybuild script
-RUN wget -o /home/cubit/bootstrap_eb.py https://raw.githubusercontent.com/hpcugent/easybuild-framework/develop/easybuild/scripts/bootstrap_eb.py
