@@ -42,6 +42,7 @@ RUN yum install -y \
     unzip \
     vim-common \
     wget \
+    which \
     zip
 
 # Update cubit's .bashrc
