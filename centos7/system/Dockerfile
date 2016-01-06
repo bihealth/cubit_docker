@@ -14,6 +14,7 @@ RUN yum install -y \
     bzip2 \
     bzip2-devel \
     environment-modules \
+    file \
     gawk \
     gcc \
     gcc-c++ \
