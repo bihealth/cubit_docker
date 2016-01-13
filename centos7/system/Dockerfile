@@ -37,6 +37,7 @@ RUN yum install -y \
     perl-List-MoreUtils \
     pth \
     python-devel \
+    python-setuptools \
     sqlite-devel \
     tar \
     tcsh \
