@@ -1,11 +1,11 @@
-FROM ubuntu:14.04
+FROM debian:8
 
-ENV http_proxy=http://proxy.charite.de:8080
-ENV https_proxy=http://proxy.charite.de:8080
+ENV http_proxy=
+ENV https_proxy=
 
 # Add group and user first so they are assigned consistently
-RUN groupadd cubit -g 5000 \
-    && useradd -u 5005 -g cubit cubit
+RUN groupadd cubit -g __GID__ \
+    && useradd -u __UID__ -g cubit cubit
 
 RUN mkdir -p \
         /cubit/tools/easybuild.local \

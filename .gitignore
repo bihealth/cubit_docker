@@ -2,6 +2,9 @@
 .*.sw?
 *~
 
+*/data/Dockerfile
+*/system/Dockerfile
+
 # Hide backup stuff
 old/
 

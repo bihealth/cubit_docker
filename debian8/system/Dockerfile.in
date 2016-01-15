@@ -1,11 +1,11 @@
 FROM debian:8
 
-ENV http_proxy=http://proxy.charite.de:8080
-ENV https_proxy=http://proxy.charite.de:8080
+ENV http_proxy=
+ENV https_proxy=
 
 # Add group and user first so they are assigned consistently
-RUN groupadd --gid 5000 cubit \
-    && adduser --uid 5005 --gid 5000 cubit
+RUN groupadd --gid __GID__ cubit \
+    && adduser --uid __UID__ --gid __GID__ cubit
 
 # Install required packages
 RUN apt-get update

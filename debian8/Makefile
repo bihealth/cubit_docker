@@ -3,10 +3,22 @@
 all:
 	echo "Either use build or run"
 
-build_system:
+%/Dockerfile: %/Dockerfile.in
+	cp $< $@
+	perl -p -i -e "s/__GID__/$$(id -g)/g" $@
+	perl -p -i -e "s/__UID__/$$(id -u)/g" $@
+	if [ -n "$$http_proxy" ]; then \
+		perl -p -i -e "s|ENV http_proxy=|ENV http_proxy=$$http_proxy|g" $@; \
+		perl -p -i -e "s|ENV https_proxy=|ENV https_proxy=$$https_proxy|g" $@; \
+	else \
+		perl -p -i -e "s|ENV http_proxy=|#ENV http_proxy=|g" $@; \
+		perl -p -i -e "s|ENV https_proxy=|#ENV https_proxy=|g" $@; \
+	fi
+
+build_system: system/Dockerfile
 	sudo docker build -t cubit.debian8 system
 
-build_data:
+build_data: data/Dockerfile
 	sudo docker build -t cubit.debian8.data data
 
 run_data:
