@@ -46,12 +46,11 @@ RUN yum install -y \
     which \
     zip
 
-# Update cubit's .bashrc
-RUN echo "module use /cubit/tools/easybuild/modules/all" >> /home/cubit/.bashrc && \
-        echo "module load EasyBuild" >> /home/cubit/.bashrc
-
 # Switch to cubit user
 USER cubit
 
 # Go to /home/cubit after login
-WORKDIR /home/cubit
+WORKDIR /cubit/tools
+
+# Build everything
+#RUN ./buildscript.sh __PREFIX__
