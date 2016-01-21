@@ -16,17 +16,17 @@ all:
 	fi
 
 build_system: system/Dockerfile
-	sudo docker build -t cubit.ubuntu14.04 system
+	docker build -t cubit.ubuntu14.04 system
 
 build_data: data/Dockerfile
-	sudo docker build -t cubit.ubuntu14.04.data data
+	docker build -t cubit.ubuntu14.04.data data
 
 run_data:
 	docker ps --all | grep cubit-ubuntu14.04-data >/dev/null \
-		|| sudo docker run --name cubit-ubuntu14.04-data cubit.ubuntu14.04.data
+		|| docker run --name cubit-ubuntu14.04-data cubit.ubuntu14.04.data
 
 run_system:
-	sudo docker run \
+	docker run \
 		-t \
 		-i \
 		--volumes-from cubit-ubuntu14.04-data \

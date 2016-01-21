@@ -16,19 +16,19 @@ all:
 	fi
 
 build_system: system/Dockerfile
-	sudo docker build -t cubit.centos7 system
+	docker build -t cubit.centos7 system
 
 build_data: data/Dockerfile
-	sudo docker build -t cubit.centos7.data data
+	docker build -t cubit.centos7.data data
 
 run_data:
 	docker ps --all | grep cubit-centos7-data >/dev/null \
-		|| sudo docker run --name cubit-centos7-data cubit.centos7.data
+		|| docker run --name cubit-centos7-data cubit.centos7.data
 
 run_system:
-	sudo docker run \
+	docker run \
 		-t \
 		-i \
-		--volumes-from cubit-centos7-data \
 		-v /vol/local/data/cubit.env/cubit:/cubit \
+ 		-v /vol/local/data/cubit.env/centos7:$(prefix) \
 		cubit.centos7

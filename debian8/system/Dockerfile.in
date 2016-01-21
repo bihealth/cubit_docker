@@ -50,4 +50,4 @@ RUN echo "module use /cubit/tools/easybuild/modules/all" >> /home/cubit/.bashrc 
 USER cubit
 
 # Go to /home/cubit after login
-WORKDIR /home/cubit
+WORKDIR /cubit/tools
