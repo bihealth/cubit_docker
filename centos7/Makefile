@@ -7,6 +7,7 @@ all:
 	cp $< $@
 	perl -p -i -e "s/__GID__/$$(id -g)/g" $@
 	perl -p -i -e "s/__UID__/$$(id -u)/g" $@
+	perl -p -i -e "s/__prefix__/$$prefix/g" $@
 	if [ -n "$$http_proxy" ]; then \
 		perl -p -i -e "s|ENV http_proxy=|ENV http_proxy=$$http_proxy|g" $@; \
 		perl -p -i -e "s|ENV https_proxy=|ENV https_proxy=$$https_proxy|g" $@; \
@@ -27,8 +28,7 @@ run_data:
 
 run_system:
 	docker run \
-		-t \
-		-i \
-		-v /vol/local/data/cubit.env/cubit:/cubit \
- 		-v /vol/local/data/cubit.env/centos7:$(prefix) \
+        -it \
+		-v /vol/local/data/data/cubit.env/cubit:/cubit.env \
+ 		-v /vol/local/data/data/cubit.env/centos7:$(prefix) \
 		cubit.centos7
