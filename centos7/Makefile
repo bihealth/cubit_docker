@@ -7,6 +7,7 @@ all:
 	cp $< $@
 	perl -p -i -e "s/__GID__/$$(id -g)/g" $@
 	perl -p -i -e "s/__UID__/$$(id -u)/g" $@
+	perl -p -i -e "s/__prefix__/$$prefix/g" $@
 	if [ -n "$$http_proxy" ]; then \
 		perl -p -i -e "s|ENV http_proxy=|ENV http_proxy=$$http_proxy|g" $@; \
 		perl -p -i -e "s|ENV https_proxy=|ENV https_proxy=$$https_proxy|g" $@; \
@@ -16,19 +17,18 @@ all:
 	fi
 
 build_system: system/Dockerfile
-	sudo docker build -t cubit.centos7 system
+	docker build -t cubit.centos7 system
 
 build_data: data/Dockerfile
-	sudo docker build -t cubit.centos7.data data
+	docker build -t cubit.centos7.data data
 
 run_data:
 	docker ps --all | grep cubit-centos7-data >/dev/null \
-		|| sudo docker run --name cubit-centos7-data cubit.centos7.data
+		|| docker run --name cubit-centos7-data cubit.centos7.data
 
 run_system:
-	sudo docker run \
-		-t \
-		-i \
-		--volumes-from cubit-centos7-data \
-		-v /vol/local/data/cubit.env/cubit:/cubit \
+	docker run \
+        -it \
+		-v /vol/local/data/data/cubit.env/cubit:/cubit.env \
+ 		-v /vol/local/data/data/cubit.env/centos7:$(prefix) \
 		cubit.centos7

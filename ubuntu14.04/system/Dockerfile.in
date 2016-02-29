@@ -28,6 +28,7 @@ RUN apt-get install -y \
       libxml2-dev \
       pkg-config \
       python \
+      python-pip \
       python2.7 \
       tcsh \
       unzip \
@@ -42,12 +43,15 @@ RUN echo "typeset -f module > /dev/null" >> /home/cubit/.bashrc && \
         echo "    source /etc/profile.d/modules.sh" >> /home/cubit/.bashrc && \
         echo "fi" >> /home/cubit/.bashrc
 
-RUN echo "module use /cubit/tools/easybuild/modules/all" >> /home/cubit/.bashrc && \
+RUN echo "module use __prefix__/current/tools/easybuild/modules/all" >> /home/cubit/.bashrc && \
         echo "module load EasyBuild" >> /home/cubit/.bashrc && \
-        echo "export PYTHONPATH=\$PYTHONPATH:/cubit/tools/easybuild.local" >> /home/cubit/.bashrc
+        echo "export PYTHONPATH=\$PYTHONPATH:__prefix__/current/tools/easybuild.local" >> /home/cubit/.bashrc
+
+# Install modern version of setuptools via pip
+RUN pip install setuptools==19.4
 
 # Switch to cubit user
 USER cubit
 
 # Go to /home/cubit after login
-WORKDIR /home/cubit
+WORKDIR /cubit/tools

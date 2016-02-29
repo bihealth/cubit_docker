@@ -7,6 +7,8 @@ ENV https_proxy=
 RUN groupadd cubit -g __GID__ \
     && useradd -u __UID__ -g cubit cubit
 
+RUN rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+
 # Install required packages
 RUN yum install -y \
     autoconf \
@@ -37,6 +39,7 @@ RUN yum install -y \
     perl-List-MoreUtils \
     pth \
     python-devel \
+    python-pip \
     sqlite-devel \
     tar \
     tcsh \
@@ -47,11 +50,20 @@ RUN yum install -y \
     zip
 
 # Update cubit's .bashrc
-RUN echo "module use /cubit/tools/easybuild/modules/all" >> /home/cubit/.bashrc && \
-        echo "module load EasyBuild" >> /home/cubit/.bashrc
+RUN echo "typeset -f module > /dev/null" >> /home/cubit/.bashrc && \
+        echo "if [ \$? != 0 -a -r /etc/profile.d/modules.sh ]; then" >> /home/cubit/.bashrc && \
+        echo "    source /etc/profile.d/modules.sh" >> /home/cubit/.bashrc && \
+        echo "fi" >> /home/cubit/.bashrc
+
+RUN echo "module use __prefix__/current/tools/easybuild/modules/all" >> /home/cubit/.bashrc && \
+        echo "module load EasyBuild" >> /home/cubit/.bashrc && \
+        echo "export PYTHONPATH=\$PYTHONPATH:__prefix__/current/tools/easybuild.local" >> /home/cubit/.bashrc
+
+# Install modern version of setuptools via pip
+RUN pip install setuptools==19.4
 
 # Switch to cubit user
 USER cubit
 
 # Go to /home/cubit after login
-WORKDIR /home/cubit
+WORKDIR /cubit.env/tools

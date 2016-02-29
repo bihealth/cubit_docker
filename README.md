@@ -27,27 +27,21 @@ This allows for easy, isolated installation and building of Cubit.
 
 - Follow the [Provide required non-distributable software](https://github.com/bihealth/cubit/blob/master/tools/README.md#provide-required-non-distributable-software) step from the Cubit installation.
 
-## Build Data and System Image
+## Build System Image
 
 The description here is for `centos7` but it should work for `ubuntu14.04` and `debian8` as well.
 
 Make sure that the environment variables `http_proxy` and `https_proxy` are set if necessary.
 They will also be set within the `Dockerfile`.
 
-Adjust `centos7/Makefile` and change `/vol/local/data/cubit.env/cubit` to the path to your cubit checkout.
+Adjust `centos7/Makefile` and change `/vol/local/data/data/cubit.env/cubit` to the path to your cubit checkout.
 
 Then, execute the following:
 
 ```
 # cd centos7
-# make build_data
-# make run_data
 # make build_system
 ```
-
-The `make run_data` will create a data image that will host our data.
-In our Docker container that we use for the installation, we will mount the volumes from the created image (`cubit-centos7-data`).
-Further, we map the `cubit` directory that we cloned via Git into the container.
 
 The next step is to start the Docker container and perform the Cubit installation.
 Note that the `cubit` Git checkout is meant to be **shared** by all containers.
@@ -56,39 +50,8 @@ On the other hand, any git command performing an update must only be run by one 
 After the updating step (in particular the one involving Git LFS) is complete, you can run the compilation in multiple containers concurrently.
 
 ```
-# make run_system
+# make run_system prefix=<INSTALLPATH>
 (inside the container)
-# cd /cubit/tools
-# ./buildscript.sh /cubit/tools
+# ./buildscript.sh <INSTALLPATH>
 ```
-
-## Reset Data Image
-
-To remove the existing installation of `cubit` and to start with a fresh
-installation, you can simply remove the docker container. Therefore you should
-exit the current system container first. Afterwards you can remove the data
-container. To figure out how your data container is named, type:
-
-```
-# docker ps -a
-```
-
-In this list find the container that is named `cubit.<OS>.data:latest`:
-
-```
-CONTAINER ID        IMAGE                           
-7fa46fdb983d        cubit.centos7.data:latest       
-4c0fbc79ff7c        cubit.ubuntu14.04.data:latest   
-22977c1e9df2        cubit.debian8.data:latest       
-```
-
-Then remove the according container, giving the `CONTAINER ID` and start a new
-one (note that it is not necessary to run the build command again):
-
-```
-# docker rm <CONTAINTER ID>
-# make run_data
-# make run_system
-```
-
 You are done!
