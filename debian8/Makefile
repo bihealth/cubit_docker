@@ -16,17 +16,10 @@ all:
 		perl -p -i -e "s|ENV https_proxy=|#ENV https_proxy=|g" $@; \
 	fi
 
-build_system: system/Dockerfile
+build: system/Dockerfile
 	docker build -t cubit.debian8 system
 
-build_data: data/Dockerfile
-	docker build -t cubit.debian8.data data
-
-run_data:
-	docker ps --all | grep cubit-debian8-data >/dev/null \
-		|| docker run --name cubit-debian8-data cubit.debian8.data
-
-run_system:
+run:
 	docker run \
         -it \
 		-v /vol/local/data/data/cubit.env/cubit:/cubit.env \

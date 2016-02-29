@@ -40,7 +40,7 @@ Then, execute the following:
 
 ```
 # cd centos7
-# make build_system
+# make build
 ```
 
 The next step is to start the Docker container and perform the Cubit installation.
@@ -50,7 +50,7 @@ On the other hand, any git command performing an update must only be run by one 
 After the updating step (in particular the one involving Git LFS) is complete, you can run the compilation in multiple containers concurrently.
 
 ```
-# make run_system prefix=<INSTALLPATH>
+# make run prefix=<INSTALLPATH>
 (inside the container)
 # ./buildscript.sh <INSTALLPATH>
 ```

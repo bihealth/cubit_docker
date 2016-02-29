@@ -1,4 +1,4 @@
-.PHONY: all build_system build_data run_data run_system
+.PHONY: all build_system run_system
 
 all:
 	echo "Either use build or run"
@@ -16,17 +16,10 @@ all:
 		perl -p -i -e "s|ENV https_proxy=|#ENV https_proxy=|g" $@; \
 	fi
 
-build_system: system/Dockerfile
+build: system/Dockerfile
 	docker build -t cubit.centos7 system
 
-build_data: data/Dockerfile
-	docker build -t cubit.centos7.data data
-
-run_data:
-	docker ps --all | grep cubit-centos7-data >/dev/null \
-		|| docker run --name cubit-centos7-data cubit.centos7.data
-
-run_system:
+run:
 	docker run \
         -it \
 		-v /vol/local/data/data/cubit.env/cubit:/cubit.env \
