@@ -22,6 +22,8 @@ RUN apt-get install -y \
       libibverbs-dev \
       liblist-moreutils-perl \
       liblzo2-dev \
+      libmysqlclient-dev \
+      libpng12-dev \
       libssl-dev \
       libtinfo-dev \
       libx11-dev \

@@ -25,11 +25,13 @@ RUN yum install -y \
     libdb-devel \
     libibverbs-devel \
     libpng12 \
+    libpng-devel \
     libXt-devel \
     libxml2-devel \
     lzo-devel \
     m4 \
     make \
+    mariadb-devel \
     mlocate \
     ncurses-libs \
     openssl-devel \
