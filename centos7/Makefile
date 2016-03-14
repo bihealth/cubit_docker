@@ -1,27 +1,35 @@
-.PHONY: all build_system run_system
+.PHONY: build run
 
-all:
-	echo "Either use build or run"
+PREFIX=/scratch/cubit
 
-%/Dockerfile: %/Dockerfile.in
-	cp $< $@
-	perl -p -i -e "s/__GID__/$$(id -g)/g" $@
-	perl -p -i -e "s/__UID__/$$(id -u)/g" $@
-	perl -p -i -e "s/__prefix__/$$prefix/g" $@
-	if [ -n "$$http_proxy" ]; then \
-		perl -p -i -e "s|ENV http_proxy=|ENV http_proxy=$$http_proxy|g" $@; \
-		perl -p -i -e "s|ENV https_proxy=|ENV https_proxy=$$https_proxy|g" $@; \
-	else \
-		perl -p -i -e "s|ENV http_proxy=|#ENV http_proxy=|g" $@; \
-		perl -p -i -e "s|ENV https_proxy=|#ENV https_proxy=|g" $@; \
-	fi
+default: run
 
-build: system/Dockerfile
-	docker build -t cubit.centos7 system
+build:
+	docker build \
+		--build-arg PREFIX=$(PREFIX) \
+		-t \
+		cubit.centos7 \
+		.
 
-run:
-	docker run \
-        -it \
-		-v /vol/local/data/data/cubit.env/cubit:/cubit.env \
- 		-v /vol/local/data/data/cubit.env/centos7:$(prefix) \
-		cubit.centos7
+run: build
+	docker run -it \
+		--env HOME=/tmp \
+		-u $(shell id -u):$(shell id -g) \
+		-v /vol/local/data/cubit.env/cubit:/cubit.env \
+		-v /vol/local/data/cubit.env/centos7:$(PREFIX) \
+		--workdir /cubit.env/tools \
+		cubit.centos7 \
+		bash --login ./buildscript.sh \
+			-a haswell \
+			$(PREFIX)
+	docker run -it \
+		--env HOME=/tmp \
+		-u $(shell id -u):$(shell id -g) \
+		-v /vol/local/data/cubit.env/cubit:/cubit.env \
+		-v /vol/local/data/cubit.env/centos7:$(PREFIX) \
+		--workdir /cubit.env/tools \
+		cubit.centos7 \
+		bash --login ./buildscript.sh \
+			-a haswell \
+			-e \
+			$(PREFIX)
