@@ -27,7 +27,7 @@ run: build
 		--workdir /cubit.env/tools \
 		cubit.centos7 \
 		bash --login ./buildscript.sh \
-			-a haswell \
+			-a ivybridge \
 			$(PREFIX)
 	docker run -it \
 		--env HOME=/tmp \
@@ -37,7 +37,7 @@ run: build
 		--workdir /cubit.env/tools \
 		cubit.centos7 \
 		bash --login ./buildscript.sh \
-			-a haswell \
+			-a ivybridge \
 			-e \
 			$(PREFIX)
 
