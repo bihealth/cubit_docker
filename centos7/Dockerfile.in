@@ -26,6 +26,7 @@ RUN yum update -y && \
         automake \
         bzip2 \
         bzip2-devel \
+        doxygen \
         environment-modules \
         file \
         gawk \
@@ -62,6 +63,16 @@ RUN yum update -y && \
         which \
         zip
 
+# Copy libdrmaa.so to the right place so the Python drmaa
+# package installs.  Torque's drmaa does not work as it contains
+# C++ symbols -_-
+RUN cd tmp && \
+        wget http://dl.dropbox.com/u/47200624/respin/ge2011.11.tar.gz && \
+        tar xzf ge2011.11.tar.gz && \
+        mkdir -p /opt/sge/lib/lx-amd64 && \
+        cp ge2011.11/lib/linux-x64/libdrmaa.so /opt/sge/lib/lx-amd64 && \
+        rm -rf ge2011.11.tar.gz ge2011.11
+
 # Append module loading to system-wide profile file
 RUN echo "typeset -f module > /dev/null" >> /etc/profile && \
         echo "source /etc/profile.d/modules.sh" >> /etc/profile && \
@@ -72,3 +83,7 @@ RUN source /etc/profile
 
 # Install modern version of setuptools via pip
 RUN pip install setuptools==19.4
+
+# Add user, must have a name for Python installer
+RUN groupadd -g __gid__ buildmaster && \
+        adduser -u __uid__ -g __gid__ buildmaster
