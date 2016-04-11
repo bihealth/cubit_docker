@@ -1,6 +1,7 @@
 .PHONY: build run
 
 PREFIX=/scratch/cubit
+LOCAL=/vol/local/data/data/cubit.env
 
 default: run
 
@@ -22,8 +23,8 @@ run: build
 	docker run -it \
 		--env HOME=/tmp \
 		-u $(shell id -u):$(shell id -g) \
-		-v /vol/local/data/cubit.env/cubit:/cubit.env \
-		-v /vol/local/data/cubit.env/centos7:$(PREFIX) \
+		-v $(LOCAL)/cubit:/cubit.env \
+		-v $(LOCAL)/centos7:$(PREFIX) \
 		--workdir /cubit.env/tools \
 		cubit.centos7 \
 		bash --login ./buildscript.sh \
@@ -32,8 +33,8 @@ run: build
 	docker run -it \
 		--env HOME=/tmp \
 		-u $(shell id -u):$(shell id -g) \
-		-v /vol/local/data/cubit.env/cubit:/cubit.env \
-		-v /vol/local/data/cubit.env/centos7:$(PREFIX) \
+		-v $(LOCAL)/cubit:/cubit.env \
+		-v $(LOCAL)/centos7:$(PREFIX) \
 		--workdir /cubit.env/tools \
 		cubit.centos7 \
 		bash --login ./buildscript.sh \
@@ -45,8 +46,8 @@ bash:
 	docker run -it \
 		--env HOME=/tmp \
 		-u $(shell id -u):$(shell id -g) \
-		-v /vol/local/data/cubit.env/cubit:/cubit.env \
-		-v /vol/local/data/cubit.env/centos7:$(PREFIX) \
+		-v $(LOCAL)/cubit:/cubit.env \
+		-v $(LOCAL)/centos7:$(PREFIX) \
 		--workdir /cubit.env/tools \
 		cubit.centos7 \
 		bash --login

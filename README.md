@@ -18,11 +18,15 @@ This allows for easy, isolated installation and building of Cubit.
 # git clone https://github.com/bihealth/cubit_docker.git
 ```
 
-- Inside, create a new checkout of cubit (will be ignored by the cubit_docker Git repository)
+- Create a new directory `<X>` somewhere
+- Create a new checkout of cubit in `<X>`
+- Create a new directory in `<X>` (this is where the compilation will be placed)
 
 ```
-# cd cubit_docker
+# mkdir X
+# cd X
 # git clone https://github.com/bihealth/cubit.git
+# mkdir centos7
 ```
 
 - Follow the [Provide required non-distributable software](https://github.com/bihealth/cubit/blob/master/tools/README.md#provide-required-non-distributable-software) step from the Cubit installation.
@@ -34,24 +38,35 @@ The description here is for `centos7` but it should work for `ubuntu14.04` and `
 Make sure that the environment variables `http_proxy` and `https_proxy` are set if necessary.
 They will also be set within the `Dockerfile`.
 
-Adjust `centos7/Makefile` and change `/vol/local/data/data/cubit.env/cubit` to the path to your cubit checkout.
+Adjust `centos7/Makefile` and change the line `LOCAL=` to `<X>` and `PREFIX=` to where you want to copy the compilation to as final step.
 
 Then, execute the following:
 
 ```
-# cd centos7
+# cd <...>/cubit_docker/centos7
 # make build
 ```
 
-The next step is to start the Docker container and perform the Cubit installation.
-Note that the `cubit` Git checkout is meant to be **shared** by all containers.
-This has the advantage that updates are visible immediately by all containers.
-On the other hand, any git command performing an update must only be run by one container.
-After the updating step (in particular the one involving Git LFS) is complete, you can run the compilation in multiple containers concurrently.
+The next step is to start the Docker container and perform the Cubit
+installation.  Note that the `cubit` Git checkout is meant to be **shared** by
+all containers.  This has the advantage that updates are visible immediately by
+all containers.  On the other hand, any git command performing an update must
+only be run by one container.  After the updating step (in particular the one
+        involving Git LFS) is complete, you can run the compilation in multiple
+containers concurrently.
 
 ```
-# make run prefix=<INSTALLPATH>
-(inside the container)
-# ./buildscript.sh <INSTALLPATH>
+# make run
 ```
+
+This will autmatically build cubit.
+For debugging or to install a certain package, you can also run
+
+```
+# make bash
+```
+
+After building cubit, you want to copy the content of `<X>` to where you have
+set your `PREFIX` variable in the Makefile.
+
 You are done!
