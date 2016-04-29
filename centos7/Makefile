@@ -1,7 +1,7 @@
 .PHONY: build run
 
 PREFIX=/scratch/cubit
-LOCAL=/vol/local/data/data/cubit.env
+LOCAL=/vol/local/data/cubit.env
 
 default: run
 
@@ -20,16 +20,6 @@ build: Dockerfile
 		.
 
 run: build
-	docker run -it \
-		--env HOME=/tmp \
-		-u $(shell id -u):$(shell id -g) \
-		-v $(LOCAL)/cubit:/cubit.env \
-		-v $(LOCAL)/centos7:$(PREFIX) \
-		--workdir /cubit.env/tools \
-		cubit.centos7 \
-		bash --login ./buildscript.sh \
-			-a ivybridge \
-			$(PREFIX)
 	docker run -it \
 		--env HOME=/tmp \
 		-u $(shell id -u):$(shell id -g) \
