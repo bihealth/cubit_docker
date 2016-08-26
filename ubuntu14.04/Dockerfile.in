@@ -1,0 +1,59 @@
+FROM ubuntu:14.04
+
+# Install prefix, can be changed with docker build --build-arg PREFIX=/other
+ARG PREFIX=/cubit
+
+# Install required packages
+RUN apt-get update
+RUN apt-get install -y \
+      curl \
+      environment-modules \
+      git \
+      libbz2-dev \
+      libc6-dev-i386 \
+      libdb-dev \
+      libfreetype6-dev \
+      libibverbs-dev \
+      liblist-moreutils-perl \
+      liblzo2-dev \
+      libmysqlclient-dev \
+      libpng12-dev \
+      libssl-dev \
+      libtinfo-dev \
+      libx11-dev \
+      libxml2-dev \
+      pkg-config \
+      python \
+      python-pip \
+      python2.7 \
+      tcsh \
+      unzip \
+      vim-nox \
+      wget \
+      xorg-dev \
+      zip
+
+# Copy libdrmaa.so to the right place so the Python drmaa
+# package installs.  Torque's drmaa does not work as it contains
+# C++ symbols -_-
+RUN cd tmp && \
+        wget http://dl.dropbox.com/u/47200624/respin/ge2011.11.tar.gz && \
+        tar xzf ge2011.11.tar.gz && \
+        mkdir -p /opt/sge/lib/lx-amd64 && \
+        cp ge2011.11/lib/linux-x64/libdrmaa.so /opt/sge/lib/lx-amd64 && \
+        rm -rf ge2011.11.tar.gz ge2011.11
+
+# Append module loading to system-wide profile file
+RUN echo "typeset -f module > /dev/null" >> /etc/profile && \
+        echo "source /etc/profile.d/modules.sh" >> /etc/profile && \
+        echo "module use $PREFIX/current/tools/easybuild/modules/all" >> /etc/profile && \
+        echo "module load EasyBuild" >> /etc/profile && \
+        echo "export PYTHONPATH=\$PYTHONPATH:$PREFIX/current/tools/easybuild.local" >> /etc/profile
+RUN source /etc/profile
+
+# Install modern version of setuptools via pip
+RUN pip install setuptools==19.4
+
+# Add user, must have a name for Python installer
+RUN groupadd -g __gid__ buildmaster && \
+        adduser -u __uid__ -g __gid__ buildmaster

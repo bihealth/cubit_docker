@@ -1,6 +1,6 @@
 .PHONY: build run
 
-PREFIX=/scratch/cubit
+PREFIX=/fast/projects/cubit
 LOCAL=/vol/local/data/cubit.env
 
 default: run
@@ -29,7 +29,6 @@ run: build
 		cubit.centos7 \
 		bash --login ./buildscript.sh \
 			-a ivybridge \
-			-e \
 			$(PREFIX)
 
 bash:

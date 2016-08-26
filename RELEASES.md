@@ -1,10 +1,11 @@
 # cubit_docker Release Notes
 
-## work_in_progress
+## Release 0.11.1 (2016-08-25)
 
 ### Features
 
 * Simplified automatic build of cubit
+* Removed debian8
 
 
 ## Release 0.8.0 (2016-04-011)
