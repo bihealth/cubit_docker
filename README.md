@@ -20,20 +20,20 @@ $ git clone https://github.com/bihealth/cubit_docker.git
 
 - Create a new directory `<X>` somewhere
 
-```terminal
+```
 $ mkdir -p /path/X
 $ cd /path/X
 ```
 
 - Create a new checkout of cubit in `<X>`
 
-```terminal
+```
 $ git clone https://github.com/bihealth/cubit.git
 ```
 
 - Create a new directory in `<X>` (this is where the compilation will be placed)
 
-```terminal
+```
 $ mkdir -p /path/X/centos7
 ```
 
